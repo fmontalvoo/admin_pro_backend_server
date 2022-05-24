@@ -1,5 +1,5 @@
 {
-  "name": "ng_adv_backend_server",
+  "name": "admin_pro_backend_server",
   "version": "1.0.0",
   "description": "Backend hecho con node.js y express",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fmontalvoo/ng_adv_backend_server.git"
+    "url": "git+https://github.com/fmontalvoo/admin_pro_backend_server.git"
   },
   "keywords": [
     "node",
@@ -19,9 +19,9 @@
   "author": "Frank Montalvo Ochoa",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fmontalvoo/ng_adv_backend_server/issues"
+    "url": "https://github.com/fmontalvoo/admin_pro_backend_server/issues"
   },
-  "homepage": "https://github.com/fmontalvoo/ng_adv_backend_server#readme",
+  "homepage": "https://github.com/fmontalvoo/admin_pro_backend_server#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
