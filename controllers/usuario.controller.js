@@ -13,13 +13,27 @@ const crearUsuario = async (req, res) => {
     });
 }
 
-const obtenerUsuarios = (req, res) => {
+const leerUsuario = async (req, res) => {
+    const id = req.params.id;
+
+    const usuario = await Usuario.findById(id, 'name email role google');
+
     res.status(200).json({
-        msg: 'Usuarios'
+        usuario
+    });
+}
+
+const obtenerUsuarios = async (req, res) => {
+
+    const usuarios = await Usuario.find({}, 'name email role google');
+
+    res.status(200).json({
+        usuarios
     });
 }
 
 module.exports = {
     crearUsuario,
+    leerUsuario,
     obtenerUsuarios,
 };
