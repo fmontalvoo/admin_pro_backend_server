@@ -37,12 +37,17 @@ const leerUsuario = async (req, res) => {
 
         await Usuario.findById(id, 'name email role google')
             .then(usuario => {
-                res.status(200).json({
-                    usuario
-                });
+                if (!(!!usuario))
+                    res.status(404).json({
+                        message: 'Usuario no encontrado'
+                    });
+                else
+                    res.status(200).json({
+                        usuario
+                    });
             })
             .catch(error => {
-                res.status(404).json({
+                res.status(400).json({
                     message: error.message
                 });
             });
@@ -62,9 +67,14 @@ const actualizarUsuario = async (req, res) => {
 
         await Usuario.findByIdAndUpdate(id, usuario, { new: true })
             .then(usuario => {
-                res.status(200).json({
-                    usuario
-                });
+                if (!!!usuario)
+                    res.status(404).json({
+                        message: 'Usuario no encontrado'
+                    });
+                else
+                    res.status(200).json({
+                        usuario
+                    });
             })
             .catch(error => {
                 res.status(409).json({
