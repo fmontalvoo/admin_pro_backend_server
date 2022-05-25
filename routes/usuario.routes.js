@@ -7,6 +7,7 @@ const {
     crearUsuario,
     leerUsuario,
     actualizarUsuario,
+    eliminarUsuario,
     obtenerUsuarios
 } = require('../controllers/usuario.controller');
 
@@ -22,12 +23,14 @@ const crearUsuarioMiddleware = [
 
 const actualizarUsuarioMiddleware = [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
+    validarCampos,
 ];
 
 // Rutas
 router.post('/', crearUsuarioMiddleware, crearUsuario);
 router.get('/:id', leerUsuario);
 router.put('/:id', actualizarUsuarioMiddleware, actualizarUsuario);
+router.delete('/:id', eliminarUsuario);
 router.get('/', obtenerUsuarios);
 
 module.exports = router;
