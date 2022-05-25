@@ -12,7 +12,7 @@ const generarJWT = (uid) => {
         },
             (error, token) => {
                 if (error)
-                    reject(token);
+                    reject(error);
                 else
                     resolve(token);
             });

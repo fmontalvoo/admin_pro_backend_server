@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
+const { validarJWT } = require('../middlewares/validar-jwt.middleware');
 const { validarCampos } = require('../middlewares/validar-campos.middleware');
 
 const {
@@ -22,6 +23,7 @@ const crearUsuarioMiddleware = [
 ];
 
 const actualizarUsuarioMiddleware = [
+    validarJWT,
     check('name', 'El nombre es obligatorio').not().isEmpty(),
     validarCampos,
 ];
@@ -30,7 +32,7 @@ const actualizarUsuarioMiddleware = [
 router.post('/', crearUsuarioMiddleware, crearUsuario);
 router.get('/:id', leerUsuario);
 router.put('/:id', actualizarUsuarioMiddleware, actualizarUsuario);
-router.delete('/:id', eliminarUsuario);
-router.get('/', obtenerUsuarios);
+router.delete('/:id', validarJWT, eliminarUsuario);
+router.get('/', validarJWT, obtenerUsuarios);
 
 module.exports = router;
