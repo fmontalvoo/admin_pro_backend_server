@@ -8,15 +8,15 @@ const app = express();
 connection();
 
 const port = process.env.PORT || 3000;
+const path = '/api/v1';
 
 // Cross-origin
 app.use(cors());
 // Serializacion
 app.use(express.json());
 
-app.use('/', (req, res) => {
-    res.status(200).json({ msg: 'Hello World' });
-});
+// Rutas
+app.use(`${path}/usuarios`, require('./routes/usuario.routes'));
 
 app.listen(port, () => {
     console.info(`Server is running on port ${port}`);
