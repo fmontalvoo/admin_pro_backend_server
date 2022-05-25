@@ -2,18 +2,22 @@ const bcrypt = require('bcryptjs');
 
 const Usuario = require('../models/usuario.model');
 
+const { generarJWT } = require('../utils/jwt');
+
 const login = async (req, res) => {
     try {
 
         const { email, password } = req.body;
 
         await Usuario.findOne({ email })
-            .then(usuario => {
+            .then(async usuario => {
                 if (!!usuario)
-                    if (bcrypt.compareSync(password, usuario.password))
+                    if (bcrypt.compareSync(password, usuario.password)) {
+                        const token = await generarJWT(usuario.id);
                         res.status(200).json({
-                            usuario
+                            token
                         });
+                    }
                 res.status(401).json({
                     message: 'Error de credenciales'
                 });

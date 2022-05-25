@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 const Usuario = require('../models/usuario.model');
+const { generarJWT } = require('../utils/jwt');
 
 const crearUsuario = async (req, res) => {
     try {
@@ -14,9 +15,11 @@ const crearUsuario = async (req, res) => {
         usuario.password = bcrypt.hashSync(password, salt);
 
         await usuario.save()
-            .then(() => {
+            .then(async () => {
+                const token = await generarJWT(usuario.id);
                 res.status(200).json({
-                    message: 'Usuario creado correctamente'
+                    usuario,
+                    token
                 });
             })
             .catch(error => {
