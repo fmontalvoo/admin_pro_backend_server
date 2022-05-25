@@ -53,6 +53,31 @@ const leerUsuario = async (req, res) => {
     }
 }
 
+const actualizarUsuario = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+
+        const { password, google, ...usuario } = data;
+
+        await Usuario.findByIdAndUpdate(id, usuario, { new: true })
+            .then(usuario => {
+                res.status(200).json({
+                    usuario
+                });
+            })
+            .catch(error => {
+                res.status(409).json({
+                    message: error.message
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
 const obtenerUsuarios = async (req, res) => {
     try {
         await Usuario.find({}, 'name email role google')
@@ -76,5 +101,6 @@ const obtenerUsuarios = async (req, res) => {
 module.exports = {
     crearUsuario,
     leerUsuario,
+    actualizarUsuario,
     obtenerUsuarios,
 };
