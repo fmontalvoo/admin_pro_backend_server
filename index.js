@@ -17,6 +17,7 @@ app.use(express.json());
 
 // Rutas
 app.use(`${path}/usuarios`, require('./routes/usuario.routes'));
+app.use(`${path}/auth`, require('./routes/auth.route'));
 
 app.listen(port, () => {
     console.info(`Server is running on port ${port}`);
