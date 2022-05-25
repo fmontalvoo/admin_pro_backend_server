@@ -2,34 +2,51 @@ const Usuario = require('../models/usuario.model');
 
 
 const crearUsuario = async (req, res) => {
-    const data = req.body;
+    try {
+        const data = req.body;
 
-    const usuario = new Usuario(data);
+        const usuario = new Usuario(data);
 
-    await usuario.save();
+        await usuario.save();
 
-    res.status(200).json({
-        usuario
-    });
+        res.status(200).json({
+            usuario
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
 const leerUsuario = async (req, res) => {
-    const id = req.params.id;
+    try {
+        const id = req.params.id;
 
-    const usuario = await Usuario.findById(id, 'name email role google');
+        const usuario = await Usuario.findById(id, 'name email role google');
 
-    res.status(200).json({
-        usuario
-    });
+        res.status(200).json({
+            usuario
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
 const obtenerUsuarios = async (req, res) => {
+    try {
+        const usuarios = await Usuario.find({}, 'name email role google');
 
-    const usuarios = await Usuario.find({}, 'name email role google');
-
-    res.status(200).json({
-        usuarios
-    });
+        res.status(200).json({
+            usuarios
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
 module.exports = {
