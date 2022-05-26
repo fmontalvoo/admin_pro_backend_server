@@ -15,9 +15,14 @@ const {
 const router = new Router();
 
 // Middleware
+const crearHospitalMiddleware = [
+    validarJWT,
+    check('name', 'El nombre del hospital es obligatorio').not().isEmpty(),
+    validarCampos,
+];
 
 // Rutas
-router.post('/', crearHospital);
+router.post('/', crearHospitalMiddleware, crearHospital);
 router.get('/:id', leerHospital);
 router.put('/:id', actualizarHospital);
 router.delete('/:id', eliminarHospital);
