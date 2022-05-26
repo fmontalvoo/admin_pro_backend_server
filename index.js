@@ -18,6 +18,7 @@ app.use(express.json());
 // Rutas
 app.use(`${path}/auth`, require('./routes/auth.routes'));
 app.use(`${path}/search`, require('./routes/busqueda.routes'));
+app.use(`${path}/uploads`, require('./routes/uploads.routes'));
 app.use(`${path}/doctores`, require('./routes/doctor.routes'));
 app.use(`${path}/usuarios`, require('./routes/usuario.routes'));
 app.use(`${path}/hospitales`, require('./routes/hospital.routes'));

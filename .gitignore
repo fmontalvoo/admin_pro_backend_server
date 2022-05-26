@@ -170,3 +170,7 @@ dist
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/node,dotenv,visualstudiocode
+
+uploads/doctores/*
+uploads/usuarios/*
+uploads/hospitales/*
