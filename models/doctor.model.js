@@ -12,7 +12,6 @@ const DoctorSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
     },
     hostipal: {
         type: Schema.Types.ObjectId,
