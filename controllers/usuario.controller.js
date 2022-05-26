@@ -120,10 +120,20 @@ const eliminarUsuario = async (req, res) => {
 
 const obtenerUsuarios = async (req, res) => {
     try {
-        await Usuario.find({}, 'name email role google')
-            .then(usuarios => {
+
+        const from = Number(req.query.from) || 0;
+        const limit = Number(req.query.limit) || 5;
+
+        await Promise.all([
+            Usuario.find({}, 'name email role google')
+                .skip(from)
+                .limit(limit),
+            Usuario.count()
+        ])
+            .then(async ([usuarios, total]) => {
                 return res.status(200).json({
-                    usuarios
+                    usuarios,
+                    total
                 });
             })
             .catch(error => {
@@ -131,6 +141,7 @@ const obtenerUsuarios = async (req, res) => {
                     message: error.message
                 });
             });
+
     } catch (error) {
         return res.status(500).json({
             message: error.message
