@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const { v4: uuid } = require('uuid');
 
@@ -100,4 +101,14 @@ const uploadFile = async (req, res) => {
     }
 }
 
-module.exports = { uploadFile };
+const getImage = async (req, res) => {
+    const { img, collection } = req.params;
+
+    const imagePath = path.join(__dirname, `../uploads/${collection}/${img}`);
+
+    if (!fs.existsSync(imagePath))
+        return res.status(404).sendFile(path.join(__dirname, '../uploads/no-img.jpg'));
+    return res.sendFile(imagePath);
+}
+
+module.exports = { uploadFile, getImage };
