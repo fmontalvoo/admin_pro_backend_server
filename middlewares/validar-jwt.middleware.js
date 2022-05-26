@@ -13,7 +13,7 @@ const validarJWT = (req, res, next) => {
         return next();
     } catch (error) {
         return res.status(401).json({
-            message: 'Token no valido'
+            message: 'No tiene permisos para acceder'
         });
     }
 }
