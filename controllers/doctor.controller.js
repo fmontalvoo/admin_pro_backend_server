@@ -2,13 +2,27 @@ const Doctor = require('../models/doctor.model');
 
 const crearDoctor = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Crear'
-        });
+        const uid = req.uid;
+        const data = req.body;
+
+        const doctor = new Doctor({ user: uid, ...data });
+
+        await doctor.save()
+            .then(() => {
+                return res.status(200).json({
+                    doctor
+                });
+            })
+            .catch(error => {
+                return res.status(409).json({
+                    message: error.message
+                });
+            });
+
     } catch (error) {
         return res.status(500).json({
             message: error.message
-        })
+        });
     }
 }
 
@@ -20,7 +34,7 @@ const leerDoctor = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
-        })
+        });
     }
 }
 
@@ -32,7 +46,7 @@ const actualizarDoctor = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
-        })
+        });
     }
 }
 const eliminarDoctor = async (req, res) => {
@@ -43,7 +57,7 @@ const eliminarDoctor = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
-        })
+        });
     }
 }
 
@@ -55,7 +69,7 @@ const obtenerDoctores = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
-        })
+        });
     }
 }
 
