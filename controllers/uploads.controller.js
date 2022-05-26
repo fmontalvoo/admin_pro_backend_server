@@ -8,6 +8,12 @@ const Hospital = require('../models/hospital.model');
 
 const actualizarRegistro = async (collection, id, name) => {
 
+    const path = `./uploads/${collection}`;
+
+    const borrarImagen = (previusPath) => {
+        if (fs.existsSync(previusPath))
+            fs.unlinkSync(previusPath);//Elimina la imagen.
+    }
 
     switch (collection) {
         case 'doctores':
@@ -15,22 +21,36 @@ const actualizarRegistro = async (collection, id, name) => {
             if (!doctor)
                 return false;
 
-            const previusPath = `./uploads/${collection}/${doctor.image}`;
-
-            if (fs.existsSync(previusPath))
-                fs.unlinkSync(previusPath);
+            borrarImagen(`${path}/${doctor.image}`);
 
             doctor.image = name;
             await doctor.save();
 
             return true;
 
-            break;
         case 'usuarios':
-            break;
-        case 'hospitales':
-            break;
+            const usuario = await Usuario.findById(id);
+            if (!usuario)
+                return false;
 
+            borrarImagen(`${path}/${usuario.image}`);
+
+            usuario.image = name;
+            await usuario.save();
+
+            return true;
+
+        case 'hospitales':
+            const hospital = await Hospital.findById(id);
+            if (!hospital)
+                return false;
+
+            borrarImagen(`${path}/${hospital.image}`);
+
+            hospital.image = name;
+            await hospital.save();
+
+            return true;
     }
 
 }
