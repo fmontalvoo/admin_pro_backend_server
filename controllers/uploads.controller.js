@@ -1,4 +1,39 @@
+const fs = require('fs');
+
 const { v4: uuid } = require('uuid');
+
+const Doctor = require('../models/doctor.model');
+const Usuario = require('../models/usuario.model');
+const Hospital = require('../models/hospital.model');
+
+const actualizarRegistro = async (collection, id, name) => {
+
+
+    switch (collection) {
+        case 'doctores':
+            const doctor = await Doctor.findById(id);
+            if (!doctor)
+                return false;
+
+            const previusPath = `./uploads/${collection}/${doctor.image}`;
+
+            if (fs.existsSync(previusPath))
+                fs.unlinkSync(previusPath);
+
+            doctor.image = name;
+            await doctor.save();
+
+            return true;
+
+            break;
+        case 'usuarios':
+            break;
+        case 'hospitales':
+            break;
+
+    }
+
+}
 
 const uploadFile = async (req, res) => {
     try {
@@ -29,6 +64,8 @@ const uploadFile = async (req, res) => {
         file.mv(uploadPath, function (error) {
             if (error)
                 return res.status(500).json({ message: error.message });
+
+            actualizarRegistro(collection, id, fileName);
 
             return res.status(200).json({
                 message: 'Archivo subido correctamente',
