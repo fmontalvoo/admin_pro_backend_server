@@ -14,22 +14,22 @@ const login = async (req, res) => {
                 if (!!usuario)
                     if (bcrypt.compareSync(password, usuario.password)) {
                         const token = await generarJWT(usuario.id);
-                        res.status(200).json({
+                        return res.status(200).json({
                             token
                         });
                     }
-                res.status(401).json({
+                return res.status(401).json({
                     message: 'Error de credenciales'
                 });
             })
             .catch(error => {
-                res.status(400).json({
+                return res.status(400).json({
                     message: error.message
                 });
             });
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }

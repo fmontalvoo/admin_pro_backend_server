@@ -17,18 +17,18 @@ const crearUsuario = async (req, res) => {
         await usuario.save()
             .then(async () => {
                 const token = await generarJWT(usuario.id);
-                res.status(200).json({
+                return res.status(200).json({
                     usuario,
                     token
                 });
             })
             .catch(error => {
-                res.status(409).json({
+                return res.status(409).json({
                     message: error.message
                 });
             });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }
@@ -41,21 +41,21 @@ const leerUsuario = async (req, res) => {
         await Usuario.findById(id, 'name email role google')
             .then(usuario => {
                 if (!(!!usuario))
-                    res.status(404).json({
+                    return res.status(404).json({
                         message: 'Usuario no encontrado'
                     });
                 else
-                    res.status(200).json({
+                    return res.status(200).json({
                         usuario
                     });
             })
             .catch(error => {
-                res.status(400).json({
+                return res.status(400).json({
                     message: error.message
                 });
             });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }
@@ -71,21 +71,21 @@ const actualizarUsuario = async (req, res) => {
         await Usuario.findByIdAndUpdate(id, usuario, { new: true })
             .then(usuario => {
                 if (!!!usuario)
-                    res.status(404).json({
+                    return res.status(404).json({
                         message: 'Usuario no encontrado'
                     });
                 else
-                    res.status(200).json({
+                    return res.status(200).json({
                         usuario
                     });
             })
             .catch(error => {
-                res.status(409).json({
+                return res.status(409).json({
                     message: error.message
                 });
             });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }
@@ -98,21 +98,21 @@ const eliminarUsuario = async (req, res) => {
         await Usuario.findByIdAndDelete(id)
             .then(usuario => {
                 if (!(!!usuario))
-                    res.status(404).json({
+                    return res.status(404).json({
                         message: 'Usuario no encontrado'
                     });
                 else
-                    res.status(200).json({
+                    return res.status(200).json({
                         usuario
                     });
             })
             .catch(error => {
-                res.status(400).json({
+                return res.status(400).json({
                     message: error.message
                 });
             });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }
@@ -122,17 +122,17 @@ const obtenerUsuarios = async (req, res) => {
     try {
         await Usuario.find({}, 'name email role google')
             .then(usuarios => {
-                res.status(200).json({
+                return res.status(200).json({
                     usuarios
                 });
             })
             .catch(error => {
-                res.status(404).json({
+                return res.status(404).json({
                     message: error.message
                 });
             });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
         });
     }
