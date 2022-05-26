@@ -18,7 +18,7 @@ const router = new Router();
 const crearDoctorMiddleware = [
     validarJWT,
     check('name', 'El nombre del doctor es obligatorio').not().isEmpty(),
-    check('hospital', 'El ID del hospital del doctor es obligatorio').not().isEmpty(),
+    check('hospital', 'El ID del hospital debe ser valido').isMongoId(),
     validarCampos,
 ];
 
