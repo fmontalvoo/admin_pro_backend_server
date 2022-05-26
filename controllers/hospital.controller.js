@@ -65,9 +65,18 @@ const eliminarHospital = async (req, res) => {
 
 const obtenerHospitales = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Listar'
-        });
+        await Hospital.find()
+            .populate('user', 'name email image')
+            .then(hospitales => {
+                return res.status(200).json({
+                    hospitales
+                });
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    message: error.message
+                });
+            });
     } catch (error) {
         return res.status(500).json({
             message: error.message

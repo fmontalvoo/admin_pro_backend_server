@@ -63,9 +63,19 @@ const eliminarDoctor = async (req, res) => {
 
 const obtenerDoctores = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Listar'
-        });
+        await Doctor.find()
+            .populate('user', 'name email image')
+            .populate('hospital', 'name image')
+            .then(doctores => {
+                return res.status(200).json({
+                    doctores
+                });
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    message: error.message
+                });
+            });
     } catch (error) {
         return res.status(500).json({
             message: error.message
