@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { login } = require('../controllers/auth.controller');
+const { login, loginWithGoogle } = require('../controllers/auth.controller');
 
 const { validarCampos } = require('../middlewares/validar-campos.middleware');
 
@@ -16,5 +16,6 @@ const loginMiddleware = [
 
 // Rutas
 router.post('/login', loginMiddleware, login);
+router.post('/login/google', loginWithGoogle);
 
 module.exports = router;
