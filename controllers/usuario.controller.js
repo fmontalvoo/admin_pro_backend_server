@@ -38,7 +38,7 @@ const leerUsuario = async (req, res) => {
     try {
         const id = req.params.id;
 
-        await Usuario.findById(id, 'name email role google')
+        await Usuario.findById(id, 'image name email role google')
             .then(usuario => {
                 if (!(!!usuario))
                     return res.status(404).json({
@@ -125,7 +125,7 @@ const obtenerUsuarios = async (req, res) => {
         const limit = Number(req.query.limit) || 5;
 
         await Promise.all([
-            Usuario.find({}, 'name email role google')
+            Usuario.find({}, 'image name email role google')
                 .skip(from)
                 .limit(limit),
             Usuario.count()

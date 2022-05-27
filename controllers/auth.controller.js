@@ -37,21 +37,61 @@ const login = async (req, res) => {
 }
 
 const loginWithGoogle = async (req, res) => {
-    const token = req.body.token;
-    if (!token) return res.status(401).json({
-        message: 'No existe el token'
-    });
-
-    const googleAccount = await verificarJWTGoogle(token);
-
-    if (!googleAccount)
-        return res.status(401).json({
-            message: 'La cuenta de google no es valida'
+    try {
+        const token = req.body.token;
+        if (!token) return res.status(401).json({
+            message: 'No existe el token'
         });
 
-    console.info('google account: ', googleAccount);
+        const googleAccount = await verificarJWTGoogle(token);
 
-    return res.status(200).json(googleAccount);
+        if (!googleAccount)
+            return res.status(401).json({
+                message: 'La cuenta de google no es valida'
+            });
+
+        const { email, name, picture } = googleAccount;
+        await Usuario.findOne({ email })
+            .then(async usr => {
+                let nuevoUsuario;
+                if (!usr) {
+                    nuevoUsuario = new Usuario({
+                        name,
+                        email,
+                        password: '@@@',
+                        image: picture,
+                        google: true,
+                    });
+                } else {
+                    nuevoUsuario = usr;
+                    nuevoUsuario.google = true;
+                }
+                await nuevoUsuario.save()
+                    .then(async usuario => {
+                        const token = await generarJWT(usuario.id);
+                        return res.status(200).json({
+                            token
+                        });
+                    })
+                    .catch(error =>
+                        res.status(400).json({
+                            message: error.message
+                        })
+                    );
+
+            })
+            .catch(error => {
+                return res.status(400).json({
+                    message: error.message
+                });
+            });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
 }
 
 module.exports = {
