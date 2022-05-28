@@ -30,7 +30,7 @@ const actualizarUsuarioMiddleware = [
 
 // Rutas
 router.post('/', crearUsuarioMiddleware, crearUsuario);
-router.get('/:id', leerUsuario);
+router.get('/:id', validarJWT, leerUsuario);
 router.put('/:id', actualizarUsuarioMiddleware, actualizarUsuario);
 router.delete('/:id', validarJWT, eliminarUsuario);
 router.get('/', validarJWT, obtenerUsuarios);
