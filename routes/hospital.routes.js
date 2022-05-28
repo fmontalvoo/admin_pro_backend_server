@@ -21,11 +21,17 @@ const crearHospitalMiddleware = [
     validarCampos,
 ];
 
+const actualizarHospitalMiddleware = [
+    validarJWT,
+    check('name', 'El nombre del hospital es obligatorio').not().isEmpty(),
+    validarCampos,
+];
+
 // Rutas
 router.post('/', crearHospitalMiddleware, crearHospital);
 router.get('/:id', leerHospital);
-router.put('/:id', actualizarHospital);
-router.delete('/:id', eliminarHospital);
+router.put('/:id', actualizarHospitalMiddleware, actualizarHospital);
+router.delete('/:id', validarJWT, eliminarHospital);
 router.get('/', obtenerHospitales);
 
 module.exports = router;

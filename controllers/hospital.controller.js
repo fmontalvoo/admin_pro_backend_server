@@ -29,9 +29,25 @@ const crearHospital = async (req, res) => {
 
 const leerHospital = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Leer'
-        });
+        const id = req.params.id;
+
+        await Hospital.findById(id, 'image name user')
+            .populate('user', 'name email image')
+            .then(hospital => {
+                if (!(!!hospital))
+                    return res.status(404).json({
+                        message: 'Hospital no encontrado'
+                    });
+                else
+                    return res.status(200).json({
+                        hospital
+                    });
+            })
+            .catch(error => {
+                return res.status(400).json({
+                    message: error.message
+                });
+            });
     } catch (error) {
         return res.status(500).json({
             message: error.message
@@ -41,9 +57,28 @@ const leerHospital = async (req, res) => {
 
 const actualizarHospital = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Actualizar'
-        });
+        const id = req.params.id;
+        const data = req.body;
+        const uid = req.uid;
+
+        const hospital = { ...data, user: uid };
+
+        await Hospital.findByIdAndUpdate(id, hospital, { new: true })
+            .then(hospital => {
+                if (!!!hospital)
+                    return res.status(404).json({
+                        message: 'Hospital no encontrado'
+                    });
+                else
+                    return res.status(200).json({
+                        hospital
+                    });
+            })
+            .catch(error => {
+                return res.status(409).json({
+                    message: error.message
+                });
+            });
     } catch (error) {
         return res.status(500).json({
             message: error.message
@@ -53,9 +88,24 @@ const actualizarHospital = async (req, res) => {
 
 const eliminarHospital = async (req, res) => {
     try {
-        return res.status(200).json({
-            message: 'Eliminar'
-        });
+        const id = req.params.id;
+
+        await Hospital.findByIdAndDelete(id)
+            .then(hospital => {
+                if (!(!!hospital))
+                    return res.status(404).json({
+                        message: 'Hospital no encontrado'
+                    });
+                else
+                    return res.status(200).json({
+                        hospital
+                    });
+            })
+            .catch(error => {
+                return res.status(400).json({
+                    message: error.message
+                });
+            });
     } catch (error) {
         return res.status(500).json({
             message: error.message

@@ -22,11 +22,18 @@ const crearDoctorMiddleware = [
     validarCampos,
 ];
 
+const actualizarDoctorMiddleware = [
+    validarJWT,
+    check('name', 'El nombre del doctor es obligatorio').not().isEmpty(),
+    check('hospital', 'El ID del hospital debe ser valido').isMongoId(),
+    validarCampos,
+];
+
 // Rutas
 router.post('/', crearDoctorMiddleware, crearDoctor);
 router.get('/:id', leerDoctor);
-router.put('/:id', actualizarDoctor);
-router.delete('/:id', eliminarDoctor);
+router.put('/:id', actualizarDoctorMiddleware, actualizarDoctor);
+router.delete('/:id', validarJWT, eliminarDoctor);
 router.get('/', obtenerDoctores);
 
 module.exports = router;
