@@ -16,8 +16,8 @@ const loginMiddleware = [
 ];
 
 // Rutas
+router.get('/renew', validarJWT, renewToken);
 router.post('/login', loginMiddleware, login);
-router.post('/renew', validarJWT, renewToken);
 router.post('/login/google', loginWithGoogle);
 
 module.exports = router;
