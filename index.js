@@ -14,6 +14,8 @@ const path = '/api/v1';
 app.use(cors());
 // Serializacion
 app.use(express.json());
+// Directorio publico
+app.use(express.static('public'));
 
 // Rutas
 app.use(`${path}/auth`, require('./routes/auth.routes'));
