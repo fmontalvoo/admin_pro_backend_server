@@ -66,7 +66,10 @@ const actualizarUsuario = async (req, res) => {
         const id = req.params.id;
         const data = req.body;
 
-        const { password, google, ...usuario } = data;
+        const { password, google, email, ...usuario } = data;
+        
+        if (!(!!google))
+            usuario.email = email;
 
         await Usuario.findByIdAndUpdate(id, usuario, { new: true })
             .then(usuario => {
