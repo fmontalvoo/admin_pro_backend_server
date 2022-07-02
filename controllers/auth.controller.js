@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const Usuario = require('../models/usuario.model');
 
 const { generarJWT } = require('../utils/jwt');
+const { getMenuBuilder } = require('../utils/menu.buillder');
 const { verificarJWTGoogle } = require('../utils/verificar.jwt.google');
 
 const login = async (req, res) => {
@@ -16,7 +17,8 @@ const login = async (req, res) => {
                     if (bcrypt.compareSync(password, usuario.password)) {
                         const token = await generarJWT(usuario.id);
                         return res.status(200).json({
-                            token
+                            token,
+                            menu: getMenuBuilder(usuario.role)
                         });
                     }
                 return res.status(401).json({
@@ -55,6 +57,7 @@ const loginWithGoogle = async (req, res) => {
             .then(async usr => {
                 let nuevoUsuario;
                 if (!usr) {
+                    // Si no existe el usuario
                     nuevoUsuario = new Usuario({
                         name,
                         email,
@@ -63,6 +66,7 @@ const loginWithGoogle = async (req, res) => {
                         google: true,
                     });
                 } else {
+                    // Si existe el usuario
                     nuevoUsuario = usr;
                     nuevoUsuario.google = true;
                 }
@@ -70,7 +74,8 @@ const loginWithGoogle = async (req, res) => {
                     .then(async usuario => {
                         const token = await generarJWT(usuario.id);
                         return res.status(200).json({
-                            token
+                            token,
+                            menu: getMenuBuilder(usuario.role)
                         });
                     })
                     .catch(error =>
@@ -102,7 +107,8 @@ const renewToken = async (req, res) => {
             .then(usuario => {
                 return res.status(200).json({
                     usuario,
-                    token
+                    token,
+                    menu: getMenuBuilder(usuario.role)
                 });
             })
             .catch(error => {
